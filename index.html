@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>I'm Sorry 💗</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',system-ui,sans-serif;color:#fff;background:linear-gradient(160deg,#1a0b2e,#3b1255 45%,#6b1d4f 100%);background-attachment:fixed;overflow-x:hidden;min-height:100vh}
+#bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.fl{position:absolute;bottom:-40px;opacity:0;animation:rise linear infinite}
+@keyframes rise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.7}100%{transform:translateY(-110vh) rotate(40deg);opacity:0}}
+section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 22px}
+.script{font-family:'Great Vibes',cursive;font-weight:400}
+h1{font-size:clamp(3rem,13vw,6.5rem);line-height:1.05;background:linear-gradient(90deg,#ffd1e8,#ff7eb6,#ffd1e8);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite}
+@keyframes shine{to{background-position:200% 0}}
+.sub{margin-top:14px;font-weight:300;letter-spacing:.12em;opacity:.85}
+.heart{font-size:4.5rem;margin-bottom:10px;display:inline-block;animation:beat 1.2s ease-in-out infinite;filter:drop-shadow(0 0 18px #ff4d9d)}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.2)}30%{transform:scale(1)}45%{transform:scale(1.15)}}
+.btn{margin-top:34px;padding:14px 34px;border:0;border-radius:50px;font:600 1rem 'Poppins',sans-serif;color:#fff;background:linear-gradient(90deg,#ff4d9d,#ff7a59);cursor:pointer;box-shadow:0 8px 28px rgba(255,77,157,.45);transition:transform .2s}
+.btn:hover{transform:translateY(-3px) scale(1.04)}
+.card{max-width:620px;padding:34px 30px;border-radius:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.card h2{font-size:2.4rem;color:#ffb3d6;margin-bottom:14px}
+.card p{font-size:1.08rem;line-height:1.85;font-weight:300}
+.reveal{opacity:0;transform:translateY(40px) scale(.97);transition:opacity 1s,transform 1s}
+.reveal.show{opacity:1;transform:none}
+ul{list-style:none;text-align:left;margin-top:6px}
+li{padding:12px 0 12px 38px;position:relative;font-weight:300;line-height:1.6;border-bottom:1px solid rgba(255,255,255,.1)}
+li:last-child{border:0}
+li::before{content:'💗';position:absolute;left:0}
+.ask{font-size:clamp(2.6rem,9vw,4.5rem);color:#ffd1e8;margin-bottom:8px}
+.row{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;min-height:70px;margin-top:20px;position:relative}
+.row .btn{margin-top:0}
+#no{background:rgba(255,255,255,.14);box-shadow:none;transition:transform .15s,left .15s,top .15s}
+#yes{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 14px rgba(255,77,157,0)}0%{box-shadow:0 0 0 0 rgba(255,77,157,.6)}}
+#thanks{display:none;max-width:560px}
+#thanks.on{display:block;animation:pop .8s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{opacity:0;transform:scale(.5)}}
+.sig{margin-top:26px;font-size:2rem;color:#ffb3d6}
+canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:5}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<canvas id="fx"></canvas>
+
+<section id="hero">
+  <div class="heart">💔</div>
+  <h1 class="script">I'm Sorry,<br><span id="her"></span></h1>
+  <p class="sub" id="tag"></p>
+  <button class="btn" onclick="document.getElementById('s1').scrollIntoView()">Please read this ↓</button>
+</section>
+
+<section id="s1"><div class="card reveal"><h2 class="script">What I did</h2><p id="m1"></p></div></section>
+<section><div class="card reveal"><h2 class="script">What I understand now</h2><p id="m2"></p></div></section>
+<section><div class="card reveal"><h2 class="script">My promises to you</h2><ul id="promises"></ul></div></section>
+
+<section id="end">
+  <div id="ask">
+    <h2 class="script ask reveal">Can you forgive me?</h2>
+    <p class="sub reveal" id="askSub"></p>
+    <div class="row reveal" id="row">
+      <button class="btn" id="yes">Yes 💖</button>
+      <button class="btn" id="no">No</button>
+    </div>
+  </div>
+  <div class="card" id="thanks">
+    <div class="heart">💖</div>
+    <h2 class="script" style="font-size:3rem">Thank you, <span id="her2"></span></h2>
+    <p id="thx"></p>
+    <div class="sig script" id="sig"></div>
+  </div>
+</section>
+
+<script>
+/* ======== EDIT ONLY THIS BLOCK ======== */
+const CONFIG = {
+  her: "My Love",            // her name
+  me: "Your Name",           // your name
+  tagline: "I hurt you, and I'm truly sorry",
+  what: "I behaved badly, and I hurt you. There is no excuse for it, and I won't try to give one. You deserved patience and respect from me, and I failed to show both.",
+  understand: "I've thought about it a lot. I know my words and my behavior made you feel unheard and upset, and that matters more to me than being right. You are the most important person in my life, and I never want to be the reason you are sad.",
+  promises: [
+    "I will listen first and speak with respect, even when I am upset.",
+    "I will take responsibility instead of making excuses.",
+    "I will think before I react, and talk to you calmly.",
+  ],
+  askSub: "I'll wait as long as you need.",
+  thanks: "Thank you for giving me another chance. I will not take it for granted. I love you.",
+};
+/* ===================================== */
+
+const $=id=>document.getElementById(id);
+$('her').textContent=CONFIG.her; $('her2').textContent=CONFIG.her;
+$('tag').textContent=CONFIG.tagline; $('m1').textContent=CONFIG.what; $('m2').textContent=CONFIG.understand;
+$('askSub').textContent=CONFIG.askSub; $('thx').textContent=CONFIG.thanks; $('sig').textContent='— '+CONFIG.me;
+CONFIG.promises.forEach(p=>{const li=document.createElement('li');li.textContent=p;$('promises').appendChild(li)});
+document.title="I'm sorry, "+CONFIG.her+" 💗";
+
+// floating hearts background
+const bg=$('bg'), em=['💗','💖','💕','🌸','✨','💞'];
+for(let i=0;i<22;i++){
+  const s=document.createElement('span');s.className='fl';
+  s.textContent=em[i%em.length];
+  s.style.left=Math.random()*100+'%';
+  s.style.fontSize=(14+Math.random()*26)+'px';
+  s.style.animationDuration=(9+Math.random()*12)+'s';
+  s.style.animationDelay=(-Math.random()*20)+'s';
+  bg.appendChild(s);
+}
+
+// reveal on scroll
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.25});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// the "No" button runs away
+const no=$('no'), row=$('row');
+function dodge(){
+  const r=row.getBoundingClientRect(), b=no.getBoundingClientRect();
+  no.style.position='fixed';
+  const x=Math.random()*(innerWidth-b.width-20)+10, y=Math.random()*(innerHeight-b.height-20)+10;
+  no.style.left=x+'px'; no.style.top=y+'px';
+}
+['mouseenter','touchstart','click'].forEach(ev=>no.addEventListener(ev,e=>{e.preventDefault();dodge()},{passive:false}));
+
+// confetti hearts
+const cv=$('fx'), cx=cv.getContext('2d'); let parts=[];
+function size(){cv.width=innerWidth;cv.height=innerHeight} size(); addEventListener('resize',size);
+function burst(){
+  for(let i=0;i<160;i++){
+    const a=Math.random()*Math.PI*2, v=4+Math.random()*9;
+    parts.push({x:innerWidth/2,y:innerHeight/2,vx:Math.cos(a)*v,vy:Math.sin(a)*v-4,g:.18,s:14+Math.random()*22,e:em[i%em.length],l:140+Math.random()*80});
+  }
+  if(!burst.on){burst.on=1;loop()}
+}
+function loop(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  parts=parts.filter(p=>p.l>0);
+  parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.l--;cx.globalAlpha=Math.min(1,p.l/40);cx.font=p.s+'px serif';cx.fillText(p.e,p.x,p.y)});
+  if(parts.length)requestAnimationFrame(loop);else burst.on=0;
+}
+$('yes').addEventListener('click',()=>{
+  $('ask').style.display='none'; $('thanks').classList.add('on');
+  burst(); setTimeout(burst,700); setTimeout(burst,1400);
+});
+</script>
+</body>
+</html>
